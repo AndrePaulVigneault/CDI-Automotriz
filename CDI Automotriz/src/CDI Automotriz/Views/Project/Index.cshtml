@@ -1,0 +1,54 @@
+﻿@model CDI_Automotriz.ViewModels.Project.ProjectIndexViewModel
+@{
+    ViewBag.Title = "Projects";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Projects</h2>
+        @foreach (var proyecto in Model.ListaProyectos) {
+            <div>
+                <p>Nombre de proyecto: @proyecto.Nombre</p>
+                <p>Descripción del proyecto: @proyecto.Descripcion</p>
+                @if (proyecto.Imagenes.FirstOrDefault() != null)
+                {
+                    <img src="~/Uploads/@proyecto.Imagenes.FirstOrDefault().Path" />
+                }
+                
+            </div>
+        }
+
+        @*<div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" for="Proyecto">Proyecto:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="Proyecto" placeholder="Insertar nombre de proyecto">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" for="Descripcion">Descripción:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Descripcion" placeholder="Insertar descripción de proyecto">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" id="submitButton" OnClick="submitButton_Click">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="#" class="thumbnail">
+                    <img src="~/Resources/Img/motor.jpg" alt="Motor" height="100%" width="100%">
+                </a>
+                Proyecto Motor
+            </div>
+        </div>*@
+    </div>
+</div>
+    
+

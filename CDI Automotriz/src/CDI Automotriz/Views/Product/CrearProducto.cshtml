@@ -1,0 +1,31 @@
+﻿@model CDI_Automotriz.ViewModels.CrearProductoViewModel
+@{
+    ViewBag.Title = "CrearProducto";
+}
+
+<form asp-controller="Product" asp-action="CrearProducto" enctype="multipart/form-data">
+    <div>
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" />
+    </div>
+    <div>
+        <label asp-for="Descripcion"></label>
+        <input asp-for="Descripcion" />
+    </div>
+    <div>
+        <input asp-for="ImagenPerfil" />
+    </div>
+    <div>
+        <input type="submit" value="Agregar" />
+    </div>
+
+    
+</form>
+
+ 
+
+
+
+
+
+

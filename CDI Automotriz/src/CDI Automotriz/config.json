@@ -1,0 +1,5 @@
+﻿{
+	"Data": {
+    "CDIAutomotrizContextConnection": "Server=(localdb)\\ProjectsV12;Database=CDIAutomotrizDB;Trusted_Connection=true;MultipleActiveResultSets=true;"
+	}
+}

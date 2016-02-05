@@ -1,0 +1,23 @@
+﻿@model CDI_Automotriz.ViewModels.Product.ProductIndexViewModel
+@{
+    ViewBag.Title = "Productos";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Productos</h2>
+        @foreach (var producto in Model.ListaProductos) {
+            <div>
+                <p>Nombre del producto: @producto.Nombre</p>
+                <p>Descripción del producto: @producto.Descripcion</p>
+                @if (producto.Imagenes.FirstOrDefault() != null)
+                {
+                    <img src="~/Uploads/@producto.Imagenes.FirstOrDefault().Path" />
+                }
+                
+            </div>
+        }
+               
+    </div>
+</div>
+    
+
