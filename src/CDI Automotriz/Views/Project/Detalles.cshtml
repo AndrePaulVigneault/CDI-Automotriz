@@ -1,0 +1,14 @@
+﻿@model CDI_Automotriz.ViewModels.Project.ProjectDetallesViewModel
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles del proyecto</h2>
+
+@Model.proyecto.Nombre
+@Model.proyecto.Descripcion
+@foreach (var Imagen in Model.proyecto.Imagenes)
+{
+    <img src="~/Uploads/@Imagen.Path"/>
+}
+

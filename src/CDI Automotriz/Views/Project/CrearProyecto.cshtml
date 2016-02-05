@@ -1,0 +1,38 @@
+﻿@model CDI_Automotriz.ViewModels.CrearProyectoViewModel
+@{
+    ViewBag.Title = "CrearProyecto";
+}
+
+<form asp-controller="Project" asp-action="CrearProyecto" enctype="multipart/form-data">
+    <div>
+        <div>
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" />
+        </div>
+        <div>
+            <label asp-for="Descripcion"></label>
+            <input asp-for="Descripcion" />
+        </div>
+        <div>
+            <label asp-for="ImagenPerfil"></label>
+            <input asp-for="ImagenPerfil" />
+        </div>
+        <div>
+            <label asp-for="Imagenes"></label>
+            <input asp-for="Imagenes" />
+        </div>
+        <div>
+            <input type="submit" value="Agregar" />
+        </div>
+        
+    </div>
+    
+</form>
+
+ 
+
+
+
+
+
+
