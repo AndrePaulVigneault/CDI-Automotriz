@@ -21,7 +21,10 @@
                     </div>
                 </div>
             </a>
-            
+
+            <div><a class="btn btn-default" asp-controller="Project" asp-action="ModificarProyecto" asp-route-id="@proyecto.ProyectoId" role="button">Modificar</a></div>
+            <div><a class="btn btn-default" asp-controller="Project" asp-action="EliminarProyecto" asp-route-id="@proyecto.ProyectoId" role="button">Eliminar</a></div>
+
         }
 
     </div>

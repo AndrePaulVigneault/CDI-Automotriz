@@ -1,0 +1,28 @@
+﻿@model CDI_Automotriz.ViewModels.ModificarProyectoViewModel
+@{
+    ViewBag.Title = "Modificar Proyectos";
+}
+<h1>Modificar Proyecto</h1>
+
+<form asp-controller="Project" asp-action="ModificarProyecto" asp-route-id="@Model.ProyectoId" enctype="multipart/form-data">
+    <div>
+        <div>
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" value="@Model.Nombre"/>
+        </div>
+        <div>
+            <label asp-for="Descripcion"></label>
+            <input asp-for="Descripcion" value="@Model.Descripcion" />
+        </div>
+        <div>
+            <label asp-for="ImagenPerfil"></label>
+            <input asp-for="ImagenPerfil"/>
+        </div>
+        
+        <div>
+            <input type="submit" value="Actualizar" />
+        </div>
+
+    </div>
+
+</form>

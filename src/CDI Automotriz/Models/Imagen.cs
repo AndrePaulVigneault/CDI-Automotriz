@@ -13,6 +13,6 @@ namespace CDI_Automotriz.Models
         public int ProyectoId { get; set;}
         public Proyecto Proyecto { get; set; }
         
-
+        
     }
 }

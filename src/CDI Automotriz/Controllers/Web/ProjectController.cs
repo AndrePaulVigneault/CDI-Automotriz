@@ -21,29 +21,62 @@ namespace CDI_Automotriz.Controllers.Web
         private CDIAutomotrizContext Context;
         private IHostingEnvironment Environment;
 
-
         public ProjectController(CDIAutomotrizContext _Context, IHostingEnvironment _environment)
         {
             Context = _Context;
             Environment = _environment;
         }
-
         
-
         // GET: /<controller>/
         public IActionResult Index()
         {
             var Proyectos = Context.Proyectos.Include(m => m.Imagenes).ToList();
             ProjectIndexViewModel modelo = new ProjectIndexViewModel();
             modelo.ListaProyectos = Proyectos;
-            return View(modelo);           
+            return View(modelo);
         }
 
         public IActionResult CrearProyecto()
         {
-            return View(); 
+            return View();
         }
+        public IActionResult ModificarProyecto(int Id)
+        {
+            var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
+            var Modelo = new ModificarProyectoViewModel();
+            Modelo.Nombre = Proyecto.Nombre;
+            Modelo.Descripcion = Proyecto.Descripcion;
+            Modelo.ProyectoId = Proyecto.ProyectoId;
+            return View(Modelo);
+        }
+        public IActionResult EliminarProyecto(int Id)
+        {
+            var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
+            if (Proyecto!=null)
+            {
+                foreach (var Imagen in Proyecto.Imagenes)
+                {
+                    var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+                    if (System.IO.File.Exists(RutaImagen))
+                    {
+                        System.IO.File.Delete(RutaImagen);
+                    }
 
+                }
+
+                var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.ImagenPerfil);
+
+                if (System.IO.File.Exists(RutaImagenPerfil))
+                {
+                    System.IO.File.Delete(RutaImagenPerfil);
+                }
+
+                Context.Proyectos.Remove(Proyecto);
+                Context.SaveChanges();
+            }
+            
+            return RedirectToAction("Index");
+        }
         public IActionResult Detalles(int Id)
         {
             var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
@@ -86,6 +119,33 @@ namespace CDI_Automotriz.Controllers.Web
             Context.Proyectos.Add(proyecto);
             Context.SaveChanges();
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult ModificarProyecto(int Id, ModificarProyectoViewModel modelo)
+        {
+            var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
+            var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.ImagenPerfil);
+
+            if (System.IO.File.Exists(RutaImagenPerfil))
+            {
+                System.IO.File.Delete(RutaImagenPerfil);
+            }
+            if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
+            {
+
+                var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
+                var rutaImagen = Path.Combine("Uploads", fileName);
+                modelo.ImagenPerfil.SaveAs(rutaImagen);
+
+                Proyecto.ImagenPerfil = fileName;
+            }
+
+            Proyecto.Nombre = modelo.Nombre;
+            Proyecto.Descripcion = modelo.Descripcion;
+            Context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
