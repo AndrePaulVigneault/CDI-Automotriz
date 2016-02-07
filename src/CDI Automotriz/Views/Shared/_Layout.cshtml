@@ -5,58 +5,29 @@
     <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-
+    <link rel="stylesheet" href="~/Resources/CSS/CDICSS.css" />
     
     <title>@ViewBag.Title</title>
 
 </head>
 
-
-
 <body >
-    <div class="row">
-        <div class="col-xs-12">
-                    <h1>CDI Automotriz</h1>
-                    <nav class="navbar navbar-default" >
-                        <div class="container-fluid">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-main-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="glyphicon glyphicon-th-list"></span>
-                                </button>
-                            </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>CDI Automotriz</h1>
+                @Html.Partial("Menu")
+            </div>
 
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse" id="bs-main-navbar-collapse-1">
-                                <ul class="nav navbar-nav" >
-                                    <li><a asp-controller="Home" asp-action="Index"><img src="~/Resources/Img/CdiLogo.jpg" height="100" width="100" alt="CdiLogo"></a></li>
-                                    <li><a asp-controller="Project" asp-action="Index"> Proyectos</a></li>
-                                    <li><a asp-controller="Project" asp-action="CrearProyecto">Crear Proyecto</a></li>
-                                    <li><a asp-controller="Product" asp-action="Index">Productos</a></li>
-                                    <li><a asp-controller="Product" asp-action="CrearProducto">Crear Producto</a>
-                                    <li><a asp-controller="Contact" asp-action="Index">Contactos</a></li>
-                                    <li><a asp-controller="Extra" asp-action="Index">Extra</a></li>
-                                    
-                                </ul>
+        </div>
 
-                               
-                            </div><!-- /.navbar-collapse -->
-                        </div><!-- /.container-fluid -->
-                    </nav>
-                </div>
-
+        <div class="row">
+            <div class="col-sm-12">
+                @RenderBody()
             </div>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-sm-12">
-            @RenderBody()
-        </div>
-    </div>
 
-
+    </div>
 
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
