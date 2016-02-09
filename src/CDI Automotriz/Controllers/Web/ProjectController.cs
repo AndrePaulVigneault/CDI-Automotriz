@@ -26,8 +26,8 @@ namespace CDI_Automotriz.Controllers.Web
             Context = _Context;
             Environment = _environment;
         }
-        
-        // GET: /<controller>/
+
+        #region MetodosGet
         public IActionResult Index()
         {
             var Proyectos = Context.Proyectos.Include(m => m.Imagenes).ToList();
@@ -35,7 +35,6 @@ namespace CDI_Automotriz.Controllers.Web
             modelo.ListaProyectos = Proyectos;
             return View(modelo);
         }
-
         public IActionResult CrearProyecto()
         {
             return View();
@@ -47,6 +46,7 @@ namespace CDI_Automotriz.Controllers.Web
             Modelo.Nombre = Proyecto.Nombre;
             Modelo.Descripcion = Proyecto.Descripcion;
             Modelo.ProyectoId = Proyecto.ProyectoId;
+            Modelo.Imagenes = Proyecto.Imagenes;
             return View(Modelo);
         }
         public IActionResult EliminarProyecto(int Id)
@@ -84,6 +84,25 @@ namespace CDI_Automotriz.Controllers.Web
             Modelo.proyecto = Proyecto;
             return View(Modelo);
         }
+        public IActionResult EliminarImagen(int Id)
+        {
+            var Imagen = Context.Imagenes.SingleOrDefault(m => m.ImagenId == Id);
+
+            var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+            if (System.IO.File.Exists(RutaImagen))
+            {
+                System.IO.File.Delete(RutaImagen);
+            }
+                        
+            Context.Imagenes.Remove(Imagen);
+            Context.SaveChanges();
+            
+            return RedirectToAction("ModificarProyecto", new {id = Imagen.ProyectoId });
+        }
+
+        #endregion
+
+        #region MetodosPost
 
         [HttpPost]
         public IActionResult CrearProyecto(CrearProyectoViewModel modelo)
@@ -131,6 +150,7 @@ namespace CDI_Automotriz.Controllers.Web
             {
                 System.IO.File.Delete(RutaImagenPerfil);
             }
+
             if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
             {
 
@@ -141,11 +161,29 @@ namespace CDI_Automotriz.Controllers.Web
                 Proyecto.ImagenPerfil = fileName;
             }
 
+
+            foreach (var Imagen in modelo.ImagenesForm)
+            {
+                if (Imagen != null && Imagen.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(Imagen.ContentDisposition).FileName.Trim('"');
+                    var rutaImagen = Path.Combine("Uploads", fileName);
+                    Imagen.SaveAs(rutaImagen);
+
+                    Proyecto.Imagenes.Add(new Imagen
+                    {
+                        Path = fileName
+                    });
+                }
+            }
+
             Proyecto.Nombre = modelo.Nombre;
             Proyecto.Descripcion = modelo.Descripcion;
             Context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ModificarProyecto", new {id = Proyecto.ProyectoId });
         }
+
+        #endregion
     }
 }

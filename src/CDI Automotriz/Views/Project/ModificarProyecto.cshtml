@@ -18,7 +18,10 @@
             <label asp-for="ImagenPerfil"></label>
             <input asp-for="ImagenPerfil"/>
         </div>
-        
+        <div>
+            <label asp-for="ImagenesForm"></label>
+            <input asp-for="ImagenesForm" />
+        </div>
         <div>
             <input type="submit" value="Actualizar" />
         </div>
@@ -26,3 +29,10 @@
     </div>
 
 </form>
+
+@foreach (var Imagen in Model.Imagenes)
+{
+    <img src="~/Uploads/@Imagen.Path" />
+    <div><a class="btn btn-default" asp-controller="Project" asp-action="EliminarImagen" asp-route-id="@Imagen.ImagenId" role="button">Eliminar Imagen</a></div>
+
+}

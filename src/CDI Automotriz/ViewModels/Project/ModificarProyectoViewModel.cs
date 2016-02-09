@@ -15,6 +15,8 @@ namespace CDI_Automotriz.ViewModels
         public string EstadoProyecto { get; set; }
         [Display(Name = "Imagen de Perfil del Proyecto")]
         public IFormFile ImagenPerfil { get; set; }
+        public ICollection<IFormFile> ImagenesForm { get; set; }
         public int ProyectoId { get; set; }
+        public ICollection<Imagen> Imagenes { get; set; }
     }
 }
