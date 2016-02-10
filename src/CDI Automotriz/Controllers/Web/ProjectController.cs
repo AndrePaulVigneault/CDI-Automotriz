@@ -52,11 +52,12 @@ namespace CDI_Automotriz.Controllers.Web
         public IActionResult EliminarProyecto(int Id)
         {
             var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
+            var RutaFolder = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.Nombre);
             if (Proyecto!=null)
             {
                 foreach (var Imagen in Proyecto.Imagenes)
                 {
-                    var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+                    var RutaImagen = Path.Combine(RutaFolder, Imagen.Path);
                     if (System.IO.File.Exists(RutaImagen))
                     {
                         System.IO.File.Delete(RutaImagen);
@@ -64,12 +65,14 @@ namespace CDI_Automotriz.Controllers.Web
 
                 }
 
-                var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.ImagenPerfil);
+                var RutaImagenPerfil = Path.Combine(RutaFolder, Proyecto.ImagenPerfil);
 
                 if (System.IO.File.Exists(RutaImagenPerfil))
                 {
                     System.IO.File.Delete(RutaImagenPerfil);
                 }
+
+                System.IO.Directory.Delete(RutaFolder);
 
                 Context.Proyectos.Remove(Proyecto);
                 Context.SaveChanges();
@@ -87,8 +90,9 @@ namespace CDI_Automotriz.Controllers.Web
         public IActionResult EliminarImagen(int Id)
         {
             var Imagen = Context.Imagenes.SingleOrDefault(m => m.ImagenProyectoId == Id);
+            var Proyecto = Context.Proyectos.SingleOrDefault(m => m.ProyectoId == Imagen.ProyectoId);
 
-            var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+            var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads",Proyecto.Nombre, Imagen.Path);
             if (System.IO.File.Exists(RutaImagen))
             {
                 System.IO.File.Delete(RutaImagen);
@@ -107,13 +111,23 @@ namespace CDI_Automotriz.Controllers.Web
         [HttpPost]
         public IActionResult CrearProyecto(CrearProyectoViewModel modelo)
         {
+            if (!ModelState.IsValid) {
+                return View(modelo);
+            }
+                
             var proyecto = new Proyecto();
-            
+            var RutaUploads = Path.Combine(Environment.WebRootPath, "Uploads");
+            if (!System.IO.Directory.Exists(RutaUploads)) {
+                System.IO.Directory.CreateDirectory(RutaUploads);
+            }
+            RutaUploads = Path.Combine(RutaUploads, modelo.Nombre);
+            System.IO.Directory.CreateDirectory(RutaUploads);
+
             if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
             {
-                //var RutaUploads = Path.Combine(Environment.WebRootPath, "Uploads");
+                
                 var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
-                var rutaImagen = Path.Combine("Uploads", fileName);
+                var rutaImagen = Path.Combine("Uploads",modelo.Nombre, fileName);
                 modelo.ImagenPerfil.SaveAs(rutaImagen);
 
                 proyecto.ImagenPerfil = fileName;
@@ -124,7 +138,7 @@ namespace CDI_Automotriz.Controllers.Web
                 {
                     //var RutaUploads = Path.Combine(Environment.WebRootPath, "Uploads");
                     var fileName = ContentDispositionHeaderValue.Parse(Imagen.ContentDisposition).FileName.Trim('"');
-                    var rutaImagen = Path.Combine("Uploads", fileName);
+                    var rutaImagen = Path.Combine("Uploads", modelo.Nombre, fileName);
                     Imagen.SaveAs(rutaImagen);
 
                     proyecto.Imagenes.Add(new ImagenProyecto
@@ -143,31 +157,46 @@ namespace CDI_Automotriz.Controllers.Web
         [HttpPost]
         public IActionResult ModificarProyecto(int Id, ModificarProyectoViewModel modelo)
         {
-            var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
-            var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.ImagenPerfil);
-
-            if (System.IO.File.Exists(RutaImagenPerfil))
+            if (!ModelState.IsValid)
             {
-                System.IO.File.Delete(RutaImagenPerfil);
+                return View(modelo);
             }
+
+            var Proyecto = Context.Proyectos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProyectoId == Id);
+            string RutaFolder = "";
+            if (modelo.Nombre != Proyecto.Nombre)
+            {
+                var RutaFolderVieja = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.Nombre);
+                var RutaFolderNueva = Path.Combine(Environment.WebRootPath, "Uploads", modelo.Nombre);
+                System.IO.Directory.Move(RutaFolderVieja, RutaFolderNueva);
+                RutaFolder = Path.Combine("Uploads", modelo.Nombre);
+            }
+            else {
+                RutaFolder = Path.Combine("Uploads", Proyecto.Nombre);
+            }
+            
 
             if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
             {
+                var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Proyecto.ImagenPerfil);
 
+                if (System.IO.File.Exists(RutaImagenPerfil))
+                {
+                    System.IO.File.Delete(RutaImagenPerfil);
+                }
                 var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
-                var rutaImagen = Path.Combine("Uploads", fileName);
+                var rutaImagen = Path.Combine(RutaFolder, fileName);
                 modelo.ImagenPerfil.SaveAs(rutaImagen);
 
                 Proyecto.ImagenPerfil = fileName;
             }
-
 
             foreach (var Imagen in modelo.ImagenesForm)
             {
                 if (Imagen != null && Imagen.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(Imagen.ContentDisposition).FileName.Trim('"');
-                    var rutaImagen = Path.Combine("Uploads", fileName);
+                    var rutaImagen = Path.Combine(RutaFolder, fileName);
                     Imagen.SaveAs(rutaImagen);
 
                     Proyecto.Imagenes.Add(new ImagenProyecto

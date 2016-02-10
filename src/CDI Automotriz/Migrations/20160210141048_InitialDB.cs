@@ -4,7 +4,7 @@ using Microsoft.Data.Entity.Migrations;
 
 namespace CDIAutomotriz.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class InitialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

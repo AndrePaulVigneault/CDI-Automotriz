@@ -110,7 +110,7 @@ namespace CDI_Automotriz.Controllers.Web
 
         [HttpPost]
         public IActionResult CrearProducto(CrearProductoViewModel modelo)
-        {
+        { 
             var producto = new Producto();
             
             if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)

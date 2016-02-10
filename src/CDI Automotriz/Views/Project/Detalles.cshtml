@@ -3,11 +3,29 @@
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles del proyecto</h2>
+<h2 class="text-center">Detalles del proyecto</h2>
 
-@Model.proyecto.Nombre
-@Model.proyecto.Descripcion
-@foreach (var Imagen in Model.proyecto.Imagenes)
-{
-    <img src="~/Uploads/@Imagen.Path"/>
-}
+<div>
+    <h4><strong>Nombre del proyecto: </strong></h4>
+    <p>@Model.proyecto.Nombre</p>
+</div>
+<div>
+    <h4><strong>Descripción del proyecto: </strong></h4>
+    <p>@Model.proyecto.Descripcion</p>
+</div>
+<div>
+    <h4><strong>Imagenes del proyecto: </strong></h4>
+</div>
+<div class="row">
+    @foreach (var Imagen in Model.proyecto.Imagenes)
+    {
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <img class="ImagenesDetalles" src="~/Uploads/@Model.proyecto.Nombre/@Imagen.Path" />
+        </div>
+    }
+</div>
+
+
+
+
+

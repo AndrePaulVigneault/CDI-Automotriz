@@ -9,9 +9,12 @@ namespace CDI_Automotriz.ViewModels
 {
     public class CrearProyectoViewModel
     {
+        [Required]
         public string Nombre { get; set; }
+        [Required]
         public string Descripcion { get; set; }
         public string EstadoProyecto { get; set; }
+        [Required]
         [Display(Name = "Imagen de Perfil del Proyecto")]
         public IFormFile ImagenPerfil { get; set; }
         public ICollection<IFormFile> Imagenes { get; set; }

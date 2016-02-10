@@ -1,14 +1,17 @@
-﻿.ImagenPerfil {
+﻿
+.ImagenPerfil {
     max-width: 100%;
     height: auto;
 }
 
-.ListaMultipleVertical {
-    
-    color: black;
-    margin-bottom: 1%;
+.ImagenesDetalles{
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 7%;
 }
-.ListaMultipleVertical:hover {
-    color: blue;
-    background-color:lightgray;
+
+.ImagenesModificar{
+    margin-top: 7%;
+    max-width: 100%;
+    height: auto;
 }

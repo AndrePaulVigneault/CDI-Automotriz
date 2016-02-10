@@ -10,7 +10,9 @@ namespace CDI_Automotriz.ViewModels
 {
     public class ModificarProyectoViewModel
     {
+        [Required]
         public string Nombre { get; set; }
+        [Required]
         public string Descripcion { get; set; }
         public string EstadoProyecto { get; set; }
         [Display(Name = "Imagen de Perfil del Proyecto")]

@@ -2,37 +2,43 @@
 @{
     ViewBag.Title = "Modificar Proyectos";
 }
-<h1>Modificar Proyecto</h1>
+<h2 class="text-center">Modificar Proyecto</h2>
 
-<form asp-controller="Project" asp-action="ModificarProyecto" asp-route-id="@Model.ProyectoId" enctype="multipart/form-data">
-    <div>
-        <div>
-            <label asp-for="Nombre"></label>
-            <input asp-for="Nombre" value="@Model.Nombre"/>
-        </div>
-        <div>
-            <label asp-for="Descripcion"></label>
-            <input asp-for="Descripcion" value="@Model.Descripcion" />
-        </div>
-        <div>
-            <label asp-for="ImagenPerfil"></label>
-            <input asp-for="ImagenPerfil"/>
-        </div>
-        <div>
-            <label asp-for="ImagenesForm"></label>
-            <input asp-for="ImagenesForm" />
-        </div>
-        <div>
-            <input type="submit" value="Actualizar" />
-        </div>
-
+<div class="row">
+    <div class="col-xs-6 col-xs-offset-3 panel panel-default">
+        <form class="panel-body" asp-controller="Project" asp-action="ModificarProyecto" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Nombre"></label>
+                <input  asp-for="Nombre" class="form-control" value="@Model.Nombre" />
+                <span asp-validation-for="Nombre"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion"></label>
+                <textarea asp-for="Descripcion" class="form-control" rows="4" value="@Model.Descripcion"></textarea>
+                <span asp-validation-for="Descripcion"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagenPerfil"></label>
+                <input asp-for="ImagenPerfil" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagenesForm"></label>
+                <input asp-for="ImagenesForm" />
+            </div>
+            <div>
+                <input class="btn btn-default" type="submit" value="Actualizar" />
+            </div>
+        </form>
     </div>
+</div>
 
-</form>
 
-@foreach (var Imagen in Model.Imagenes)
-{
-    <img src="~/Uploads/@Imagen.Path" />
-    <div><a class="btn btn-default" asp-controller="Project" asp-action="EliminarImagen" asp-route-id="@Imagen.ImagenProyectoId" role="button">Eliminar Imagen</a></div>
-
-}
+<div class="row">
+    @foreach (var Imagen in Model.Imagenes)
+    {
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <img class="ImagenesModificar" src="~/Uploads/@Model.Nombre/@Imagen.Path" />
+            <a class="btn btn-default center-block" asp-controller="Project" asp-action="EliminarImagen" asp-route-id="@Imagen.ImagenProyectoId" role="button">Eliminar Imagen</a>
+        </div>
+    }
+</div>
