@@ -1,10 +1,10 @@
-﻿@model CDI_Automotriz.ViewModels.ModificarProyectoViewModel
+﻿@model CDI_Automotriz.ViewModels.ModificarProductoViewModel
 @{
-    ViewBag.Title = "Modificar Proyectos";
+    ViewBag.Title = "Modificar Productos";
 }
-<h1>Modificar Proyecto</h1>
+<h1>Modificar Producto</h1>
 
-<form asp-controller="Project" asp-action="ModificarProyecto" asp-route-id="@Model.ProyectoId" enctype="multipart/form-data">
+<form asp-controller="Product" asp-action="ModificarProducto" asp-route-id="@Model.ProductoId" enctype="multipart/form-data">
     <div>
         <div>
             <label asp-for="Nombre"></label>
@@ -13,6 +13,10 @@
         <div>
             <label asp-for="Descripcion"></label>
             <input asp-for="Descripcion" value="@Model.Descripcion" />
+        </div>
+        <div>
+            <label asp-for="Precio"></label>
+            <input asp-for="Precio" />
         </div>
         <div>
             <label asp-for="ImagenPerfil"></label>
@@ -33,6 +37,6 @@
 @foreach (var Imagen in Model.Imagenes)
 {
     <img src="~/Uploads/@Imagen.Path" />
-    <div><a class="btn btn-default" asp-controller="Project" asp-action="EliminarImagen" asp-route-id="@Imagen.ImagenProyectoId" role="button">Eliminar Imagen</a></div>
+    <div><a class="btn btn-default" asp-controller="Product" asp-action="EliminarImagen" asp-route-id="@Imagen.ImagenProductoId" role="button">Eliminar Imagen</a></div>
 
 }

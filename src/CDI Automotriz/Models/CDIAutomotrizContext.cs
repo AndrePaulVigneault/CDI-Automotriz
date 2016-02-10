@@ -9,7 +9,7 @@ namespace CDI_Automotriz.Models
             Database.EnsureCreated();
         }
 
-        public DbSet<Imagen> Imagenes { get; set; }
+        public DbSet<ImagenProyecto> Imagenes { get; set; }
         public DbSet<ImagenProducto> ImagenesProducto { get; set; }
         public DbSet<Proyecto> Proyectos { get; set; }
         public DbSet<Producto> Productos { get; set; }

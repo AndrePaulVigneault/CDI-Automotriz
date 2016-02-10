@@ -6,7 +6,7 @@ namespace CDI_Automotriz.Models
     public class Proyecto
     {
         public Proyecto() {
-            Imagenes = new List<Imagen>();
+            Imagenes = new List<ImagenProyecto>();
         }
 
         public int ProyectoId { get; set; }
@@ -14,7 +14,7 @@ namespace CDI_Automotriz.Models
         public string Descripcion { get; set; }
         public string EstadoProyecto { get; set; }
         public string ImagenPerfil { get; set; }
-        public ICollection<Imagen> Imagenes { get; set; }
+        public ICollection<ImagenProyecto> Imagenes { get; set; }
 
 
 

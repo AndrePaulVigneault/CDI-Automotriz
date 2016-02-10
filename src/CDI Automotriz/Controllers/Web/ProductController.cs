@@ -28,9 +28,10 @@ namespace CDI_Automotriz.Controllers.Web
             Environment = _environment;
         }
 
-        
 
-        // GET: /<controller>/
+
+        #region MetodosGet
+
         public IActionResult Index()
         {
             var Productos = Context.Productos.Include(m => m.Imagenes).ToList();
@@ -38,11 +39,74 @@ namespace CDI_Automotriz.Controllers.Web
             modelo.ListaProductos = Productos;
             return View(modelo);           
         }
-
         public IActionResult CrearProducto()
         {
             return View(); 
         }
+        public IActionResult ModificarProducto(int Id)
+        {
+            var Producto = Context.Productos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProductoId == Id);
+            var Modelo = new ModificarProductoViewModel();
+            Modelo.Nombre = Producto.Nombre;
+            Modelo.Descripcion = Producto.Descripcion;
+            Modelo.ProductoId = Producto.ProductoId;
+            Modelo.Imagenes = Producto.Imagenes;
+            Modelo.Precio = Producto.Precio;
+            return View(Modelo);
+        }
+        public IActionResult Detalles(int Id)
+        {
+            var Producto = Context.Productos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProductoId == Id);
+            var Modelo = new ProductDetallesViewModel();
+            Modelo.producto = Producto;
+            return View(Modelo);
+        }
+        public IActionResult EliminarProducto(int Id)
+        {
+            var Producto = Context.Productos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProductoId == Id);
+            if (Producto != null)
+            {
+                foreach (var Imagen in Producto.Imagenes)
+                {
+                    var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+                    if (System.IO.File.Exists(RutaImagen))
+                    {
+                        System.IO.File.Delete(RutaImagen);
+                    }
+
+                }
+
+                var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Producto.ImagenPerfil);
+
+                if (System.IO.File.Exists(RutaImagenPerfil))
+                {
+                    System.IO.File.Delete(RutaImagenPerfil);
+                }
+
+                Context.Productos.Remove(Producto);
+                Context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        public IActionResult EliminarImagen(int Id)
+        {
+            var Imagen = Context.ImagenesProducto.SingleOrDefault(m => m.ImagenProductoId == Id);
+
+            var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
+            if (System.IO.File.Exists(RutaImagen))
+            {
+                System.IO.File.Delete(RutaImagen);
+            }
+
+            Context.ImagenesProducto.Remove(Imagen);
+            Context.SaveChanges();
+
+            return RedirectToAction("ModificarProducto", new { id = Imagen.ProductoId });
+        }
+        #endregion
+
+        #region Post
 
         [HttpPost]
         public IActionResult CrearProducto(CrearProductoViewModel modelo)
@@ -55,16 +119,78 @@ namespace CDI_Automotriz.Controllers.Web
                 var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
                 var rutaImagen = Path.Combine("Uploads", fileName);
                 modelo.ImagenPerfil.SaveAs(rutaImagen);
-                
-                producto.Imagenes.Add(new ImagenProducto{
-                    Path = fileName
-                });
+
+                producto.ImagenPerfil = fileName;
+            }
+            foreach (var Imagen in modelo.Imagenes)
+            {
+                if (Imagen != null && Imagen.Length > 0)
+                {
+                    //var RutaUploads = Path.Combine(Environment.WebRootPath, "Uploads");
+                    var fileName = ContentDispositionHeaderValue.Parse(Imagen.ContentDisposition).FileName.Trim('"');
+                    var rutaImagen = Path.Combine("Uploads", fileName);
+                    Imagen.SaveAs(rutaImagen);
+
+                    producto.Imagenes.Add(new ImagenProducto
+                    {
+                        Path = fileName
+                    });
+                }
             }
             producto.Nombre = modelo.Nombre;
             producto.Descripcion = modelo.Descripcion;
+            producto.Precio = modelo.Precio;
             Context.Productos.Add(producto);
             Context.SaveChanges();
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ModificarProducto(int Id, ModificarProductoViewModel modelo)
+        {
+            var Producto = Context.Productos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProductoId == Id);
+            var RutaImagenPerfil = Path.Combine(Environment.WebRootPath, "Uploads", Producto.ImagenPerfil);
+
+            if (System.IO.File.Exists(RutaImagenPerfil))
+            {
+                System.IO.File.Delete(RutaImagenPerfil);
+            }
+
+            if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
+            {
+
+                var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
+                var rutaImagen = Path.Combine("Uploads", fileName);
+                modelo.ImagenPerfil.SaveAs(rutaImagen);
+
+                Producto.ImagenPerfil = fileName;
+            }
+
+
+            foreach (var Imagen in modelo.ImagenesForm)
+            {
+                if (Imagen != null && Imagen.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(Imagen.ContentDisposition).FileName.Trim('"');
+                    var rutaImagen = Path.Combine("Uploads", fileName);
+                    Imagen.SaveAs(rutaImagen);
+
+                    Producto.Imagenes.Add(new ImagenProducto
+                    {
+                        Path = fileName
+                    });
+                }
+            }
+
+            Producto.Nombre = modelo.Nombre;
+            Producto.Descripcion = modelo.Descripcion;
+            Producto.Precio = modelo.Precio;
+            Producto.EstadoProducto = modelo.EstadoProducto;
+            Context.SaveChanges();
+
+            return RedirectToAction("ModificarProducto", new { id = Producto.ProductoId });
+        }
+        #endregion
+
     }
 }

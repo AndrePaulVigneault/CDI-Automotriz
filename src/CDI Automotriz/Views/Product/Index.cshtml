@@ -4,19 +4,31 @@
 }
 <div class="row">
     <div class="col-xs-12">
-        <h2>Productos</h2>
-        @foreach (var producto in Model.ListaProductos) {
-            <div>
-                <p>Nombre del producto: @producto.Nombre</p>
-                <p>Descripción del producto: @producto.Descripcion</p>
-                @if (producto.Imagenes.FirstOrDefault() != null)
-                {
-                    <img src="~/Uploads/@producto.Imagenes.FirstOrDefault().Path" />
-                }
-                
-            </div>
+        <h2>Products</h2>
+        @foreach (var producto in Model.ListaProductos)
+        {
+            <a asp-controller="Product" asp-action="Detalles" asp-route-id="@producto.ProductoId">
+                <div class="row ListaMultipleVertical">
+                    <div class="col-xs-3">
+                        @if (producto.ImagenPerfil != null)
+                        {
+                            <img class="ImagenPerfil" src="~/Uploads/@producto.ImagenPerfil" />
+                        }
+                    </div>
+                    <div class="col-xs-9">
+                        <h4>Nombre de producto: @producto.Nombre</h4>
+                        <p>Descripción del producto: @producto.Descripcion</p>
+                        <p>Precio del producto: $@producto.Precio </p>
+                        <p>Estado del producto: @producto.EstadoProducto</p>
+                    </div>
+                </div>
+            </a>
+
+            <div><a class="btn btn-default" asp-controller="Product" asp-action="ModificarProducto" asp-route-id="@producto.ProductoId" role="button">Modificar</a></div>
+            <div><a class="btn btn-default" asp-controller="Product" asp-action="EliminarProducto" asp-route-id="@producto.ProductoId" role="button">Eliminar</a></div>
+
         }
-               
+
     </div>
 </div>
     

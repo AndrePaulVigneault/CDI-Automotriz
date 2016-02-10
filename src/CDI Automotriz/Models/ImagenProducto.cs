@@ -9,7 +9,6 @@ namespace CDI_Automotriz.Models
     {
         public int ImagenProductoId { get; set; }
         public string Path { get; set; }
-
         public int ProductoId { get; set; }
         public Producto Producto { get; set; }
 

@@ -16,18 +16,6 @@ namespace CDIAutomotriz.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CDI_Automotriz.Models.Imagen", b =>
-                {
-                    b.Property<int>("ImagenId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Path");
-
-                    b.Property<int>("ProyectoId");
-
-                    b.HasKey("ImagenId");
-                });
-
             modelBuilder.Entity("CDI_Automotriz.Models.ImagenProducto", b =>
                 {
                     b.Property<int>("ImagenProductoId")
@@ -40,12 +28,28 @@ namespace CDIAutomotriz.Migrations
                     b.HasKey("ImagenProductoId");
                 });
 
+            modelBuilder.Entity("CDI_Automotriz.Models.ImagenProyecto", b =>
+                {
+                    b.Property<int>("ImagenProyectoId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Path");
+
+                    b.Property<int>("ProyectoId");
+
+                    b.HasKey("ImagenProyectoId");
+                });
+
             modelBuilder.Entity("CDI_Automotriz.Models.Producto", b =>
                 {
                     b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Descripcion");
+
+                    b.Property<string>("EstadoProducto");
+
+                    b.Property<string>("ImagenPerfil");
 
                     b.Property<string>("Nombre");
 
@@ -70,18 +74,18 @@ namespace CDIAutomotriz.Migrations
                     b.HasKey("ProyectoId");
                 });
 
-            modelBuilder.Entity("CDI_Automotriz.Models.Imagen", b =>
-                {
-                    b.HasOne("CDI_Automotriz.Models.Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoId");
-                });
-
             modelBuilder.Entity("CDI_Automotriz.Models.ImagenProducto", b =>
                 {
                     b.HasOne("CDI_Automotriz.Models.Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId");
+                });
+
+            modelBuilder.Entity("CDI_Automotriz.Models.ImagenProyecto", b =>
+                {
+                    b.HasOne("CDI_Automotriz.Models.Proyecto")
+                        .WithMany()
+                        .HasForeignKey("ProyectoId");
                 });
         }
     }

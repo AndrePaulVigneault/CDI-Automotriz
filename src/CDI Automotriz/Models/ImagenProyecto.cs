@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace CDI_Automotriz.Models
 {
-    public class Imagen
+    public class ImagenProyecto
     {
-        public int ImagenId { get; set; }
+        public int ImagenProyectoId { get; set; }
         public string Path { get; set; }
-
         public int ProyectoId { get; set;}
         public Proyecto Proyecto { get; set; }
         

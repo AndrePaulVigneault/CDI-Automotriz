@@ -17,6 +17,6 @@ namespace CDI_Automotriz.ViewModels
         public IFormFile ImagenPerfil { get; set; }
         public ICollection<IFormFile> ImagenesForm { get; set; }
         public int ProyectoId { get; set; }
-        public ICollection<Imagen> Imagenes { get; set; }
+        public ICollection<ImagenProyecto> Imagenes { get; set; }
     }
 }

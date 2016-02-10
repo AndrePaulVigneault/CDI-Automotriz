@@ -86,7 +86,7 @@ namespace CDI_Automotriz.Controllers.Web
         }
         public IActionResult EliminarImagen(int Id)
         {
-            var Imagen = Context.Imagenes.SingleOrDefault(m => m.ImagenId == Id);
+            var Imagen = Context.Imagenes.SingleOrDefault(m => m.ImagenProyectoId == Id);
 
             var RutaImagen = Path.Combine(Environment.WebRootPath, "Uploads", Imagen.Path);
             if (System.IO.File.Exists(RutaImagen))
@@ -127,7 +127,7 @@ namespace CDI_Automotriz.Controllers.Web
                     var rutaImagen = Path.Combine("Uploads", fileName);
                     Imagen.SaveAs(rutaImagen);
 
-                    proyecto.Imagenes.Add(new Imagen
+                    proyecto.Imagenes.Add(new ImagenProyecto
                     {
                         Path = fileName
                     });
@@ -170,7 +170,7 @@ namespace CDI_Automotriz.Controllers.Web
                     var rutaImagen = Path.Combine("Uploads", fileName);
                     Imagen.SaveAs(rutaImagen);
 
-                    Proyecto.Imagenes.Add(new Imagen
+                    Proyecto.Imagenes.Add(new ImagenProyecto
                     {
                         Path = fileName
                     });
@@ -179,6 +179,7 @@ namespace CDI_Automotriz.Controllers.Web
 
             Proyecto.Nombre = modelo.Nombre;
             Proyecto.Descripcion = modelo.Descripcion;
+            Proyecto.EstadoProyecto = modelo.EstadoProyecto;
             Context.SaveChanges();
 
             return RedirectToAction("ModificarProyecto", new {id = Proyecto.ProyectoId });

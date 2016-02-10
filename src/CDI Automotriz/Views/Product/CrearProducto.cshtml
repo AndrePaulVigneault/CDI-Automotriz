@@ -5,21 +5,31 @@
 
 <form asp-controller="Product" asp-action="CrearProducto" enctype="multipart/form-data">
     <div>
-        <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" />
-    </div>
-    <div>
-        <label asp-for="Descripcion"></label>
-        <input asp-for="Descripcion" />
-    </div>
-    <div>
-        <input asp-for="ImagenPerfil" />
-    </div>
-    <div>
-        <input type="submit" value="Agregar" />
-    </div>
+        <div>
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" />
+        </div>
+        <div>
+            <label asp-for="Descripcion"></label>
+            <input asp-for="Descripcion" />
+        </div>
+        <div>
+            <label asp-for="Precio"></label>
+            <input asp-for="Precio" />
+        </div>
+        <div>
+            <label asp-for="ImagenPerfil"></label>
+            <input asp-for="ImagenPerfil" />
+        </div>
+        <div>
+            <label asp-for="Imagenes"></label>
+            <input asp-for="Imagenes" />
+        </div>
+        <div>
+            <input type="submit" value="Agregar" />
+        </div>
 
-    
+    </div>
 </form>
 
  

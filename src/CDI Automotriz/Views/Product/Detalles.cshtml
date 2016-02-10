@@ -1,0 +1,25 @@
+﻿@model CDI_Automotriz.ViewModels.Product.ProductDetallesViewModel
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles del producto</h2>
+
+<div>
+    <label>
+        Producto: @Model.producto.Nombre
+    </label>
+</div>
+
+<div>
+    <label>
+        Descripcion: @Model.producto.Descripcion
+    </label>
+</div>
+
+<div>
+    @foreach (var Imagen in Model.producto.Imagenes)
+    {
+        <img src="~/Uploads/@Imagen.Path" />
+    }
+</div>
