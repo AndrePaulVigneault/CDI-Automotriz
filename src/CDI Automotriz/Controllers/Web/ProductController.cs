@@ -64,6 +64,7 @@ namespace CDI_Automotriz.Controllers.Web
         public IActionResult EliminarProducto(int Id)
         {
             var Producto = Context.Productos.Include(m => m.Imagenes).SingleOrDefault(m => m.ProductoId == Id);
+            var RutaFolder = Path.Combine(Environment.WebRootPath, "Uploads", Producto.Nombre);
             if (Producto != null)
             {
                 foreach (var Imagen in Producto.Imagenes)
@@ -82,6 +83,8 @@ namespace CDI_Automotriz.Controllers.Web
                 {
                     System.IO.File.Delete(RutaImagenPerfil);
                 }
+
+                
 
                 Context.Productos.Remove(Producto);
                 Context.SaveChanges();
@@ -110,14 +113,26 @@ namespace CDI_Automotriz.Controllers.Web
 
         [HttpPost]
         public IActionResult CrearProducto(CrearProductoViewModel modelo)
-        { 
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+
             var producto = new Producto();
-            
+            var RutaUploads = Path.Combine(Environment.WebRootPath, "Uploads");
+            if (!System.IO.Directory.Exists(RutaUploads))
+            {
+                System.IO.Directory.CreateDirectory(RutaUploads);
+            }
+            RutaUploads = Path.Combine(RutaUploads, modelo.Nombre);
+            System.IO.Directory.CreateDirectory(RutaUploads);
+
             if (modelo.ImagenPerfil != null && modelo.ImagenPerfil.Length > 0)
             {
-                var uploads = Path.Combine(Environment.WebRootPath, "Uploads");
+
                 var fileName = ContentDispositionHeaderValue.Parse(modelo.ImagenPerfil.ContentDisposition).FileName.Trim('"');
-                var rutaImagen = Path.Combine("Uploads", fileName);
+                var rutaImagen = Path.Combine("Uploads", modelo.Nombre, fileName);
                 modelo.ImagenPerfil.SaveAs(rutaImagen);
 
                 producto.ImagenPerfil = fileName;

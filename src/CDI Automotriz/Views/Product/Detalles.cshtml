@@ -16,10 +16,15 @@
         Descripcion: @Model.producto.Descripcion
     </label>
 </div>
+<div>
+    <label>
+        Precio: @Model.producto.Precio Colones
+    </label>
+</div>
 
 <div>
     @foreach (var Imagen in Model.producto.Imagenes)
     {
-        <img src="~/Uploads/@Imagen.Path" />
+        <img class="ImagenesDetalles img-thumbnail" src="~/Uploads/@Imagen.Path" />
     }
 </div>
