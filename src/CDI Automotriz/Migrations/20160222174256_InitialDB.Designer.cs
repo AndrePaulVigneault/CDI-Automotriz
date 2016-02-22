@@ -8,7 +8,7 @@ using CDI_Automotriz.Models;
 namespace CDIAutomotriz.Migrations
 {
     [DbContext(typeof(CDIAutomotrizContext))]
-    [Migration("20160210141048_InitialDB")]
+    [Migration("20160222174256_InitialDB")]
     partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

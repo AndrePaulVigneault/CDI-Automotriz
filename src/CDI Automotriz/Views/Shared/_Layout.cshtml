@@ -4,7 +4,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootswatch/flatly/bootstrap.min.css"/>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>*@
     <link rel="stylesheet" href="~/Resources/CSS/CDICSS.css" />
     <title>@ViewBag.Title</title>
 
@@ -12,21 +13,19 @@
 
 <body >
     <div class="container-fluid">
+        @Html.Partial("Menu")
         <div class="row">
             <div class="col-xs-12">
-                <h1>CDI Automotriz</h1>
-                @Html.Partial("Menu")
-            </div>
-
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
                 @RenderBody()
             </div>
         </div>
 
     </div>
+    <footer>
+        <div class="CDI-Footer">
+            <p class="text-center">Copyright &copy;&nbsp; 2016&nbsp; CDI Automotriz&nbsp; - &nbsp;Diego Avendaño Sagot&nbsp; | &nbsp;2271-1574 &nbsp;| &nbsp;8814-3629&nbsp; | &nbsp;cedei08@hotmail.com</p>
+        </div>
+    </footer>
 
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
